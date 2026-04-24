@@ -11,17 +11,12 @@ export const load = async () => {
 export const actions = {
     create: async ({ request }) => {
         const form = await request.formData();
-        const nama = form.get('nama');
-        const email = form.get('email');
-        const alamat = form.get('alamat');
-        const foto = from.get('foto');
-
         await db.insert(users).values({
-            nama,
-            email,
-            alamat,
-            foto
-        });
+            username: form.get('nama'),
+            email: form.get('email'),
+            alamat: form.get('alamat'),
+            foto: form.get('foto')
+        }); 
 
     },
 
@@ -30,7 +25,7 @@ export const actions = {
     const form = await request.formData();
     const id = form.get('id');
 
-    await db.delete(users).where(users.id.eq(Number(id)));
+    await db.delete(users).where(eq(users.id, id));
  }
 
 }
