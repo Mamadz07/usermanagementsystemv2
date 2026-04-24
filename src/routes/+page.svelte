@@ -1,4 +1,4 @@
-<form method="POST" style="display:inline-block; margin: auto; margin-top: 20px; margin-left: 10px; background-color: aqua; padding-left: 20px; justify-content:end; box-shadow: 1px 1px 20px 1px;">
+<form method="POST" action="?/create" style="display:inline-block; margin: auto; margin-top: 20px; margin-left: 10px; background-color: aqua; padding-left: 20px; justify-content:end; box-shadow: 1px 1px 20px 1px;">
 <label style="display: flex; justify-content: center; padding-top: 20px;">Create User</label>
 
     <label style="display: block; padding-top: 10px;">Nama</label>
@@ -14,3 +14,19 @@
     <input type="file" style="background: aquamarine;" />
     <button type="submit" style="display: flex; background-color: blue; justify-content: center; padding-left: 115px; padding-right: 115px; margin-top: 20px; margin-bottom: 20px;">Create</button>
 </form>
+
+
+
+
+{#each data.users as user }
+    <div>
+        <p>{user.nama}</p>
+        <p>{user.email}</p>
+        <p>{user.alamat}</p>
+
+        <form method="POST" action="?/delete">
+            <input type="hidden" name="id" value={user.id} />
+            <button type="submit">Hapus</button>
+        </form>
+    </div>
+{/each}
