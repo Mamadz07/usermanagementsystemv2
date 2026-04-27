@@ -35,7 +35,7 @@ export const actions = {
     
 }, delete: async ({ request}) => {
     const form = await request.formData();
-    const id = Number (form.get('id'));
+    const id = Number(form.get('id'));
 
     await db.delete(users).where(eq(users.id, id));
  }
