@@ -1,7 +1,5 @@
 <script>
-  import { text } from "stream/consumers";
-
-    export let data;
+  const {data} = $props();
 </script>
 
 <form method="POST" action="?/create" style=" margin-top: 20px; background-color: aqua; padding: 20px; ">
