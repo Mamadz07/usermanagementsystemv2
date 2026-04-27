@@ -1,26 +1,34 @@
-<form method="POST" action="?/create" style="display:inline-block; margin: auto; margin-top: 20px; margin-left: 10px; background-color: aqua; padding-left: 20px; justify-content:end; box-shadow: 1px 1px 20px 1px;">
-<label style="display: flex; justify-content: center; padding-top: 20px;">Create User</label>
+<script>
+  import { text } from "stream/consumers";
 
-    <label style="display: block; padding-top: 10px;">Nama</label>
-    <input name="username" placeholder="Username" required  style="display:flex; padding-top: 10px; padding-right: 80px;/">
+    export let data;
+</script>
 
-    <label style="display: block; padding-top: 10px;">Email</label>   
-    <input type="email" placeholder="Email" required style="display: flex; justify-content: center; padding-right: 80px;"/>
+<form method="POST" action="?/create" style=" margin-top: 20px; background-color: aqua; padding: 20px; ">
+    <h3 style="text-align:center;">Create User</h3>
 
-    <label style="display: block; padding-top: 10px;">Alamat</label>
-    <input name="alamat" placeholder="Alamat" style="display: flex; padding-right: 80px;" />
+    <label>Nama</label>
+    <input name="nama" placeholder="Username" required >
 
-    <label style="display: block; padding-top: 10px;">Masukan Foto profil</label>
-    <input type="file" style="background: aquamarine;" />
-    <button type="submit" style="display: flex; background-color: blue; justify-content: center; padding-left: 115px; padding-right: 115px; margin-top: 20px; margin-bottom: 20px;">Create</button>
+    <label>Email</label>   
+    <input name="email" type="email" placeholder="Email" required>
+
+    <label>Alamat</label>
+    <input name="alamat" placeholder="Alamat"/>
+
+    <label>Masukan Foto profil</label>
+    <input name="foto" placeholder="foto profil" />
+
+    <button type="submit">Create</button>
 </form>
 
 
 
 
 {#each data.users as user }
-    <div>
-        <p>{user.nama}</p>
+    <div style="border:1px solid #ccc; margin: 10px; padding: 10px;">
+        <img src={user.foto} width="80"/>
+        <p>{user.username}</p>
         <p>{user.email}</p>
         <p>{user.alamat}</p>
 
