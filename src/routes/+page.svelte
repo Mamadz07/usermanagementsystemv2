@@ -26,7 +26,7 @@
 {#each data.users as user }
     <div style="border:1px solid #ccc; margin: 10px; padding: 10px;">
         <img src={user.foto} width="80"/>
-        <p>{user.username}</p>
+        <p>{user.nama}</p>
         <p>{user.email}</p>
         <p>{user.alamat}</p>
 

@@ -11,18 +11,18 @@ export const actions = {
     create: async ({ request }) => {
         try {
             const form = await request.formData();
-            const username = form.get('username');
+            const nama = form.get('nama');
             const email = form.get('email');
             const alamat = form.get('alamat');
             const foto = form.get('foto');
 
-            if (!username || ! email) {
+            if (!nama || ! email) {
                 throw new Error("Nama dan Email Wajib diisi");
                 
             }
         
         await db.insert(users).values({
-            username: form.get(username),
+            nama: form.get(nama),
             email: form.get(email),
             alamat: form.get(alamat || ''),
             foto: String(foto || '')
