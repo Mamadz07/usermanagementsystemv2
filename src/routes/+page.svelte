@@ -1,5 +1,23 @@
 <script>
   const {data} = $props();
+
+  let editMode = false;
+  let selectedId = null;
+
+  let nama = '';
+  let email = '';
+  let alamat = '';
+  let foto = '';
+
+  function handleEdit(user) {
+    editMode = true;
+    selectedId = user.id;
+
+    nama = user.nama;
+    email = user.email;
+    alamat = user.alamat;
+    foto = user.foto;
+  }
 </script>
 
 <form method="POST" action="?/create" style=" margin-top: 20px; background-color: aqua; padding: 20px; ">
