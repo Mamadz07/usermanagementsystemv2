@@ -1,4 +1,6 @@
 <script>
+  import { on } from "events";
+
   const {data} = $props();
 
   let editMode = false;
@@ -20,22 +22,28 @@
   }
 </script>
 
-<form method="POST" action="?/create" style=" margin-top: 20px; background-color: aqua; padding: 20px; ">
-    <h3 style="text-align:center;">Create User</h3>
+<form method="POST" action={editMode ? "?/update" : "?/create"}>
+    <h3>{editMode ? "Edit User" ? "Create User"}</h3>
 
     <label>Nama</label>
-    <input name="nama" placeholder="Username" required >
+    <input name="nama" bind:value={nama} placeholder="Username" required >
 
     <label>Email</label>   
-    <input name="email" type="email" placeholder="Email" required>
+    <input name="email" bind:value={email} type="email" placeholder="Email" required>
 
     <label>Alamat</label>
-    <input name="alamat" placeholder="Alamat"/>
+    <input name="alamat" bind:value={alamat} placeholder="Alamat"/>
 
     <label>Masukan Foto profil</label>
-    <input name="foto" placeholder="foto profil" />
+    <input name="foto" bind:value={foto} placeholder="foto profil" />
 
-    <button type="submit">Create</button>
+    {#if editMode}
+        <input type="hidden" name ="id" value={selectedId}/>
+    {/if}
+
+    <button type="submit">
+        {editMode ? "Update" : "Create"}    
+    </button>
 </form>
 
 
@@ -43,11 +51,15 @@
 
 {#each data.users as user }
     <div style="border:1px solid #ccc; margin: 10px; padding: 10px;">
-        <img src={user.foto} width="80"/>
+        <img src={user.foto} width="80" alt="foto"/>
         <p>{user.nama}</p>
         <p>{user.email}</p>
         <p>{user.alamat}</p>
 
+        <button on:click={() => handleEdit(user)}>
+            Edit
+        </button>
+        
         <form method="POST" action="?/delete">
             <input type="hidden" name="id" value={user.id} />
             <button type="submit">Hapus</button>
