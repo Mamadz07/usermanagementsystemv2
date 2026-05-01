@@ -1,20 +1,20 @@
 <script>
-  import { on } from "events";
 
   const {data} = $props();
 
-  let editMode = false;
-  let selectedId = null;
+  let editMode = $state(false);
+  let selectedId = $state(null);
 
-  let nama = '';
-  let email = '';
-  let alamat = '';
-  let foto = '';
+  let nama = $state('');
+  let email = $state('');
+  let alamat = $state('');
+  let foto = $state('');
 
   function handleEdit(user) {
+    console.log("EDIT CLICK:", user);
     editMode = true;
     selectedId = user.id;
-
+ 
     nama = user.nama;
     email = user.email;
     alamat = user.alamat;
@@ -23,7 +23,7 @@
 </script>
 
 <form method="POST" action={editMode ? "?/update" : "?/create"}>
-    <h3>{editMode ? "Edit User" ? "Create User"}</h3>
+    <h3>{editMode ? "Edit User" : "Create User"}</h3>
 
     <label>Nama</label>
     <input name="nama" bind:value={nama} placeholder="Username" required >
@@ -56,7 +56,7 @@
         <p>{user.email}</p>
         <p>{user.alamat}</p>
 
-        <button on:click={() => handleEdit(user)}>
+        <button type="button" on:click={() => handleEdit(user)}>
             Edit
         </button>
         
