@@ -9,12 +9,13 @@
   let email = $state('');
   let alamat = $state('');
   let foto = $state('');
+  let showModal = $state(false);
 
   function handleEdit(user) {
     console.log("EDIT CLICK:", user);
     editMode = true;
-    selectedId = user.id;
- 
+    
+    showModal =true;
     nama = user.nama;
     email = user.email;
     alamat = user.alamat;
@@ -22,8 +23,8 @@
   }
 </script>
 
-<form method="POST" action={editMode ? "?/update" : "?/create"}>
-    <h3>{editMode ? "Edit User" : "Create User"}</h3>
+<form method="POST" action={"?/create"}>
+    <h3>{"Create User"}</h3>
 
     <label>Nama</label>
     <input name="nama" bind:value={nama} placeholder="Username" required >
@@ -37,12 +38,10 @@
     <label>Masukan Foto profil</label>
     <input name="foto" bind:value={foto} placeholder="foto profil" />
 
-    {#if editMode}
-        <input type="hidden" name ="id" value={selectedId}/>
-    {/if}
+    
 
     <button type="submit">
-        {editMode ? "Update" : "Create"}    
+        {"Create"}    
     </button>
 </form>
 
@@ -56,7 +55,10 @@
         <p>{user.email}</p>
         <p>{user.alamat}</p>
 
-        <button type="button" on:click={() => handleEdit(user)}>
+        <button
+            type="button"
+            on:click={() => handleEdit(user)}
+            class="bg-yellow-400 px-3 py-1 rounded">
             Edit
         </button>
         
@@ -66,3 +68,51 @@
         </form>
     </div>
 {/each}
+
+{#if showModal}
+    <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-2xl shadow w-[350px] relative">
+
+            <h2 class="text-lg font-bold mb-4">Edit User</h2>
+            <form method="POST" action="?/update" class="space-y-3">
+                <input type="hidden" name="id" value="{selectedId}"/>
+
+                <input
+                    class="w-full border p-2 rounded"
+                    name="nama"
+                    bind:value={nama}
+                    required
+                    />
+                <input
+                    class="w-full border p-2 rounded"
+                    name="email"
+                    bind:value={email}
+                    required 
+                    />
+                <input
+                    class="w-full border p-2 rounded"
+                    name="alamat"
+                    bind:value={alamat}
+                    />
+                <input
+                    class="w-full border p-2 rounded"
+                    name="foto"
+                    bind:value={foto}
+                    />
+                <div class="flex gap-2 mt-4">
+                    <button class="bg-blue-500 text-white px-4 py-4 py-2 rounded w-full">
+                        Update
+                    </button>
+
+                    <button
+                        type="button"
+                        on:click={() => showModal =false}
+                        class="bg-gray-400 text-white px-4 py-2 rounded"
+                        > Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    
+    </div>    
+{/if}
