@@ -3,6 +3,9 @@ import { users } from "$lib/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export const load = async () => {
+    if (!db) {
+        return { users: [] };
+    }
     const data = await db.select().from(users);
     return { users: data };
 };
@@ -20,10 +23,10 @@ export const actions = {
                 throw new Error("Nama dan Email Wajib diisi");
                 
             }
-        
+        if (!db) return;
         await db.insert(users).values({
-            nama: nama,
-            email: email,
+            nama,
+            email,
             alamat: alamat || '',
             foto: foto || ''
         }); 
@@ -43,7 +46,7 @@ export const actions = {
         const foto = form.get('foto')?.toString();
 
         if (!id) throw new Error ("ID tidak ditemukan");
-
+        if (!db) return;
         await db
             .update(users)
             .set({
@@ -61,7 +64,7 @@ export const actions = {
  },delete: async ({ request}) => {
     const form = await request.formData();
     const id = Number(form.get('id'));
-
+    if (!db) return;
     await db.delete(users).where(eq(users.id, id));
  }
 };
