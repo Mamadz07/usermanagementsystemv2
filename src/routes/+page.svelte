@@ -122,18 +122,21 @@
                     class="w-full border p-2 rounded"
                     name="nama"
                     bind:value={nama}
+                    placeholder="Nama"
                     required
                     />
                 <input
                     class="w-full border p-2 rounded"
                     name="email"
                     bind:value={email}
+                    placeholder="Email"
                     required 
                     />
                 <input
                     class="w-full border p-2 rounded"
                     name="alamat"
                     bind:value={alamat}
+                    placeholder="Alamat"
                     />
                 <input
                     class="w-full border p-2 rounded"
