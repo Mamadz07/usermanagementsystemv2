@@ -1,11 +1,10 @@
-import { db } from "$lib/server/db";
 import { createDb } from "$lib/server/db/db";
 import { users } from "$lib/server/db/schema";
 import { eq } from "drizzle-orm";
 
-
+export const prerender = false;
 export async function load({platform}) {
-    if (!platform) {
+    if (!platform?.env) {
         return {users: []};
     }
   const db = createDb(platform.env);
