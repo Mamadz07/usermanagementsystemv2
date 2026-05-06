@@ -1,18 +1,19 @@
 import { db } from "$lib/server/db";
+import { createDb } from "$lib/server/db/db";
 import { users } from "$lib/server/db/schema";
 import { eq } from "drizzle-orm";
+import { create } from "node:domain";
 
-export const load = async () => {
-    if (!db) {
-        return { users: [] };
-    }
+export async function load({platform}) {
+  const db = createDb(platform.env);
+  
     const data = await db.select().from(users);
     return { users: data };
 };
 
 export const actions = {
-    create: async ({ request }) => {
-        try {
+    create: async ({ request, platform }) => {
+            const db = createDb(platform.env);
             const form = await request.formData();
             const nama = form.get('nama')?.toString();
             const email = form.get('email')?.toString();
@@ -23,7 +24,7 @@ export const actions = {
                 throw new Error("Nama dan Email Wajib diisi");
                 
             }
-        if (!db) return;
+       
         await db.insert(users).values({
             nama,
             email,
@@ -31,40 +32,29 @@ export const actions = {
             foto: foto || ''
         }); 
         
-        } catch (err) {
-        console.error("ERROR CREATE:", err);
-        }
-    },
- update: async ({ request}) => {
-    try {
+        }, 
+    update: async ({ request, platform}) => {
+        const db = createDb(platform.env);
         const form = await request.formData();
 
         const id = Number(form.get('id'));
-        const nama = form.get('nama')?.toString();
-        const email = form.get('email')?.toString();
-        const alamat = form.get('alamat')?.toString();
-        const foto = form.get('foto')?.toString();
-
-        if (!id) throw new Error ("ID tidak ditemukan");
-        if (!db) return;
         await db
             .update(users)
             .set({
-                nama,
-                email,
-                alamat : alamat || '',
-                foto: foto || ''
-            })
-            .where(eq(users.id, id));
-                console.log("UPDATE BERHASIL");
-            
-    } catch (err){
-        console.error("ERROR UPDATE", err);
-    }
- },delete: async ({ request}) => {
+        nama: form.get("nama")?.toString(),
+        email: form.get("email")?.toString(),
+        alamat: form.get("alamat")?.toString(),
+        foto : form.get("foto")?.toString(),
+        })
+       
+      .where(eq(users.id, id));
+         
+ },
+ delete: async ({ request, platform}) => {
+    const db = createDb(platform.env);
     const form = await request.formData();
     const id = Number(form.get('id'));
-    if (!db) return;
+    
     await db.delete(users).where(eq(users.id, id));
  }
 };
