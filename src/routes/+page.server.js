@@ -2,7 +2,7 @@ import { db } from "$lib/server/db";
 import { createDb } from "$lib/server/db/db";
 import { users } from "$lib/server/db/schema";
 import { eq } from "drizzle-orm";
-import { create } from "node:domain";
+
 
 export async function load({platform}) {
   const db = createDb(platform.env);
