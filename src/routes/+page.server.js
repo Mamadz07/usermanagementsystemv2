@@ -5,6 +5,9 @@ import { eq } from "drizzle-orm";
 
 
 export async function load({platform}) {
+    if (!platform) {
+        return {users: []};
+    }
   const db = createDb(platform.env);
   
     const data = await db.select().from(users);
@@ -13,6 +16,7 @@ export async function load({platform}) {
 
 export const actions = {
     create: async ({ request, platform }) => {
+        if (!platform) return;
             const db = createDb(platform.env);
             const form = await request.formData();
             const nama = form.get('nama')?.toString();
@@ -34,6 +38,7 @@ export const actions = {
         
         }, 
     update: async ({ request, platform}) => {
+        if (!platform) return;
         const db = createDb(platform.env);
         const form = await request.formData();
 
@@ -51,6 +56,7 @@ export const actions = {
          
  },
  delete: async ({ request, platform}) => {
+    if (!platform) return;
     const db = createDb(platform.env);
     const form = await request.formData();
     const id = Number(form.get('id'));
