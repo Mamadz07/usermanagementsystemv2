@@ -11,5 +11,9 @@
 		"directory": ".svelte-kit/cloudflare"
 	},
 	"workers_dev": true,
-	"preview_urls": true
+	"preview_urls": true,
+	"vars": {
+    "DATABASE_URL": "libsql://usermanagementv2-mamadz07.aws-ap-northeast-1.turso.io",
+    "DATABASE_AUTH_TOKEN": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3Nzg1OTI4MDcsImlkIjoiMDE5ZGNmMDQtNTEwMS03M2Y5LWEyMTUtNmUyZGYwYzQ1MDJkIiwicmlkIjoiYzgyMzYyNWQtNTVmNi00ZDU2LWI5NDItZTgxODZjMDVlM2JlIn0.g06kAOEXTDDkj4Kpx5gXOMKYYshSzHSEBNMBfBnfUTCm_mQ37OyNWggZnrB0_thvPGA4ZJVleMRLXGCzLE0BCA"
+  }
 }
