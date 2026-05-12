@@ -1,5 +1,7 @@
 <script>
 
+    import { flip } from 'svelte/animate';
+    import { fade, fly, scale } from 'svelte/transition';
 
   const {data} = $props();
 
@@ -11,6 +13,8 @@
   let alamat = $state('');
   let foto = $state('');
   let showModal = $state(false);
+  let previewImage = $state('');
+  let showImageModal = $state(false);
 
   function handleEdit(user) {
     console.log("EDIT CLICK:", user);
@@ -22,6 +26,10 @@
     alamat = user.alamat;
     foto = user.foto;
   }
+  function openImage(image) {
+    previewImage = image;
+    showImageModal = true;
+}
 </script>
 <div class="min-h-screen bg-gray-100 p-6">
     <div class="grid md:grid-cols-2 gap-6">
@@ -71,16 +79,18 @@
         </form>
 
     </div>
+    
 
     <!-- ini untuk list user -->
 <div class="grid gap-4">
     {#each data.users as user }
         <div class="bg-white p-4 rounded-2xl shadow flex items-center gap-4">
         <img
-            src={user.foto || "https://via.placeholder.com/80"}
-            class="w-16 h-16 rounded-full object-cover"
-            alt="foto"
-            />
+    src={user.foto || "https://via.placeholder.com/80"}
+    class="w-16 h-16 rounded-full object-cover cursor-pointer hover:scale-110 transition"
+    alt="foto"
+    onclick={() => openImage(user.foto)}
+/>
         <div class="flex-1">
             <p class="font-bold">{user.nama}</p>
             <p class="text-sm text-gray-500">{user.email}</p>
@@ -90,7 +100,7 @@
         <div class="flex flex-col gap-2">
         <button
             type="button"
-            on:click={() => handleEdit(user)}
+            onclick={() => handleEdit(user)}
             class="bg-yellow-400 px-3 py-1 rounded">
             Edit
         </button>
@@ -110,9 +120,9 @@
 
 {#if showModal}
     <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-        on:click={() => showModal = false}>
+        onclick={() => showModal = false}>
         <div class="bg-white p-6 rounded-2xl shadow w-[350px] relative"
-            on:click={(e) => e.stopPropagation()}>
+            onclick={(e) => e.stopPropagation()}>
 
             <h2 class="text-lg font-bold mb-4">Edit User</h2>
             <form
@@ -155,7 +165,7 @@
 
                     <button
                         type="button"
-                        on:click={() => showModal =false}
+                        onclick={() => showModal =false}
                         class="bg-gray-400 text-white px-4 py-2 rounded"
                         > Cancel
                     </button>
@@ -164,4 +174,36 @@
         </div>
     
     </div>    
+{/if}
+
+{#if showImageModal}
+<div
+    class="fixed inset-0 bg-black/70 flex items-center justify-center z-[100]"
+    in:fade
+    out:fade
+    onclick={() => showImageModal = false}
+>
+
+    <div
+        class="relative"
+        in:scale={{ start: 0.8, duration: 200 }}
+        out:scale={{ duration: 150 }}
+        onclick={(e) => e.stopPropagation()}
+    >
+
+        <img
+            src={previewImage}
+            alt="preview"
+            class="max-w-[90vw] max-h-[85vh] rounded-2xl shadow-2xl"
+        />
+
+        <button
+            class="absolute -top-3 -right-3 bg-white w-10 h-10 rounded-full shadow text-xl"
+            onclick={() => showImageModal = false}
+        >
+            ×
+        </button>
+
+    </div>
+</div>
 {/if}
