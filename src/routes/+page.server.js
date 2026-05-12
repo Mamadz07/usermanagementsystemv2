@@ -28,20 +28,23 @@ export const actions = {
 
     const file = form.get('foto');
 
-    if (!nama || !email) {
-        throw new Error("Nama dan Email wajib diisi");
-    }
-
     let fotoBase64 = '';
 
     if (file && file.size > 0) {
 
         const bytes = await file.arrayBuffer();
 
-        const buffer = Buffer.from(bytes);
+        const uint8Array = new Uint8Array(bytes);
 
-        fotoBase64 =
-            `data:${file.type};base64,${buffer.toString('base64')}`;
+        let binary = '';
+
+        for (let i = 0; i < uint8Array.length; i++) {
+            binary += String.fromCharCode(uint8Array[i]);
+        }
+
+        const base64 = btoa(binary);
+
+        fotoBase64 = `data:${file.type};base64,${base64}`;
     }
 
     await db.insert(users).values({
