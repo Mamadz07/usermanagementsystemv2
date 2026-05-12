@@ -31,7 +31,7 @@
         <h2 class="text-xl font-bold mb-4">
             Create User
         </h2>
-    <form method="POST" action={"?/create"} class="space-y-3">
+    <form method="POST" action="?/create" enctype="multipart/form-data" class="space-y-3">
     
         <input
             class="w-full border p-2 rounded"
@@ -58,9 +58,9 @@
     
         <input
             class="w-full border p-2 rounded"
+            type="file"
             name="foto"
-            bind:value={foto}
-            placeholder="Foto profil"
+            accept="image/*"
             />
         <div class="flex gap-2">
             <button class="bg-blue-500 text-white px-4 py-2 rounded w-full">
@@ -115,7 +115,11 @@
             on:click={(e) => e.stopPropagation()}>
 
             <h2 class="text-lg font-bold mb-4">Edit User</h2>
-            <form method="POST" action="?/update" class="space-y-3">
+            <form
+    method="POST"
+    action="?/update"
+    enctype="multipart/form-data"
+    class="space-y-3">
                 <input type="hidden" name="id" value={selectedId}/>
 
                 <input
@@ -139,10 +143,11 @@
                     placeholder="Alamat"
                     />
                 <input
-                    class="w-full border p-2 rounded"
-                    name="foto"
-                    bind:value={foto}
-                    />
+    class="w-full border p-2 rounded"
+    type="file"
+    name="foto"
+    accept="image/*"
+/>
                 <div class="flex gap-2 mt-4">
                     <button class="bg-blue-500 text-white px-4 py-2 rounded w-full">
                         Update
