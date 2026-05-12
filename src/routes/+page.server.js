@@ -53,7 +53,7 @@ export const actions = {
         alamat: alamat || '',
         foto: fotoBase64
     });
-}, update: async ({ request, platform }) => {
+},update: async ({ request, platform }) => {
 
     if (!platform) return;
 
@@ -69,16 +69,29 @@ export const actions = {
 
     const file = form.get('foto');
 
-    let fotoBase64 = '';
+    const existingUser = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, id));
 
+    let fotoBase64 = existingUser[0]?.foto || '';
+
+    // kalau upload foto baru
     if (file && file.size > 0) {
 
         const bytes = await file.arrayBuffer();
 
-        const buffer = Buffer.from(bytes);
+        const uint8Array = new Uint8Array(bytes);
 
-        fotoBase64 =
-            `data:${file.type};base64,${buffer.toString('base64')}`;
+        let binary = '';
+
+        for (let i = 0; i < uint8Array.length; i++) {
+            binary += String.fromCharCode(uint8Array[i]);
+        }
+
+        const base64 = btoa(binary);
+
+        fotoBase64 = `data:${file.type};base64,${base64}`;
     }
 
     await db
