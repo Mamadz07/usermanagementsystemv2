@@ -1,9 +1,6 @@
 import { createDb } from "$lib/server/db/db";
 import { users } from "$lib/server/db/schema";
 import { eq } from "drizzle-orm";
-import fs from 'fs/promises';
-import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 
 export const prerender = false;
 export async function load({platform}) {
@@ -18,6 +15,7 @@ export async function load({platform}) {
 
 export const actions = {
     create: async ({ request, platform }) => {
+
     if (!platform) return;
 
     const db = createDb(platform.env);
@@ -34,32 +32,25 @@ export const actions = {
         throw new Error("Nama dan Email wajib diisi");
     }
 
-    let fotoPath = '';
+    let fotoBase64 = '';
 
     if (file && file.size > 0) {
 
-        const buffer =
-            Buffer.from(await file.arrayBuffer());
+        const bytes = await file.arrayBuffer();
 
-        const filename =
-            `${uuidv4()}-${file.name}`;
+        const buffer = Buffer.from(bytes);
 
-        const uploadPath =
-            path.join('static/uploads', filename);
-
-        await fs.writeFile(uploadPath, buffer);
-
-        fotoPath = `/uploads/${filename}`;
+        fotoBase64 =
+            `data:${file.type};base64,${buffer.toString('base64')}`;
     }
 
     await db.insert(users).values({
         nama,
         email,
         alamat: alamat || '',
-        foto: fotoPath
+        foto: fotoBase64
     });
-},
-    update: async ({ request, platform }) => {
+}, update: async ({ request, platform }) => {
 
     if (!platform) return;
 
@@ -75,22 +66,16 @@ export const actions = {
 
     const file = form.get('foto');
 
-    let fotoPath = '';
+    let fotoBase64 = '';
 
     if (file && file.size > 0) {
 
-        const buffer =
-            Buffer.from(await file.arrayBuffer());
+        const bytes = await file.arrayBuffer();
 
-        const filename =
-            `${uuidv4()}-${file.name}`;
+        const buffer = Buffer.from(bytes);
 
-        const uploadPath =
-            path.join('static/uploads', filename);
-
-        await fs.writeFile(uploadPath, buffer);
-
-        fotoPath = `/uploads/${filename}`;
+        fotoBase64 =
+            `data:${file.type};base64,${buffer.toString('base64')}`;
     }
 
     await db
@@ -99,7 +84,7 @@ export const actions = {
             nama,
             email,
             alamat: alamat || '',
-            foto: fotoPath
+            foto: fotoBase64
         })
         .where(eq(users.id, id));
 },
